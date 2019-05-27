@@ -1,85 +1,52 @@
 <template>
-	<div class="todo-container">
-		<div class="todo-wrap">
-			<!-- <TodoHeader  @addTodo='addTodo'/> -->
-			<TodoHeader ref='header'/> 
-			<TodoList :todos='todos' />
-			<todo-footer :todos='todos' :selectAllTodos='selectAllTodos' :deleteCompleteTodos='deleteCompleteTodos' />
-		</div>
+	<div>
+		你好
+		<div v-if='!repoUrl'>loading</div>
+		<div v-else>most star repo is<a :href='repoUrl'>{{repoName}}</a></div>
+
 	</div>
 </template>
 
 
-
-<!-- 绑定事件监听，触发事件
-* 
-* 订阅消息，发布消息 -->
-
 <script>
-	import TodoHeader from './components/TodoHeader'
-	import TodoList from './components/TodoList'
-	import TodoFooter from './components/TodoFooter'
-	import PubSub from 'pubsub-js'
+	import axios from 'axios'
 	export default {
-		components: {
-			TodoHeader,
-			TodoList,
-			TodoFooter
-		},
 		data() {
 			return {
-				//从Localstorage读todos
-				todos:JSON.parse(window.localStorage.getItem('todos_key') || '[]')
+				repoUrl: '',
+				repoName: ''
 			}
 		},
-		mounted(){
-			//执行异步代码
-			//给TodoHeader绑定addTodo事件监听
-			this.$refs.header.$on('addTodo',this.addTodo)
-			
-			//订阅消息
-			let that=this;
-			PubSub.subscribe('deleteTodo',(msg,index)=>{
-				this.deleteTodo(index)
+		mounted() {
+			//发ajax请求获取数据
+			const url = `https://api.github.com/search/repositories?q=v&sort=stars`
+			// this.$http.get(url).then(
+			// 	response =>{
+			// 		const result = response.data;
+			// 		const mostRepo = result.items[0]
+			// 		this.repoUrl = mostRepo.html_url;
+			// 		this.repoName  = mostRepo.name
+			// 	},
+			// 	response =>{
+			// 		
+			// 	}
+			// )
+
+			//使用axios发送ajax请求
+			axios.get(url).then(
+				response => {
+					const result = response.data;
+					const mostRepo = result.items[0]
+					this.repoUrl = mostRepo.html_url;
+					this.repoName = mostRepo.name
+				}).catch(error => {
+				console.log(error)
 			})
-			
-		},
-		methods: {
-			addTodo(todo) {
-				this.todos.unshift(todo)
-			},
-			deleteTodo(index) {
-				this.todos.splice(index, 1)
-			},
-			deleteCompleteTodos() {
-				this.todos = this.todos.filter(todo => !todo.complete)
-			},
-			selectAllTodos(check) {
-				this.todos.forEach(todo => todo.complete = check)
-			}
-		},
-		watch:{//深度监视
-			todos:{
-				deep:true,//深度监视
-				handler:function(value){
-					//将todos最新值保存到local
-					window.localStorage.setItem('todos_key',JSON.stringify(value))
-				}
-			}
+
 		}
 	}
 </script>
 
 <style>
-	/*app*/
-	.todo-container {
-		width: 600px;
-		margin: 0 auto;
-	}
 
-	.todo-container .todo-wrap {
-		padding: 10px;
-		border: 1px solid #ddd;
-		border-radius: 5px;
-	}
 </style>
