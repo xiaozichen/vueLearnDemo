@@ -1,49 +1,44 @@
 <template>
 	<div>
-		你好
-		<div v-if='!repoUrl'>loading</div>
-		<div v-else>most star repo is<a :href='repoUrl'>{{repoName}}</a></div>
+		<div class="row">
+			<div class="col-xs-offset-2 col-xs-8">
+				<div class="page-header">
+					<h2>Router Test</h2>
+				</div>
+			</div>
+		</div>
 
+		<div class="row">
+			<div class="col-xs-2 col-xs-offset-2">
+				<div class="list-group">
+					<!--生成路由链接-->
+					<!-- <router-link to="/about" class="list-group-item">About</router-link>
+					<router-link to="/home" class="list-group-item">Home</router-link> -->
+					<router-link to='/about' class="list-group-item">About</router-link>
+					<router-link to='/home'  class="list-group-item">Home</router-link>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="panel">
+					<div class="panel-body">
+						<keep-alive>
+						<router-view></router-view>
+						</keep-alive>
+						<!--显示当前组件-->
+						<!-- <keep-alive>
+							<router-view msg="abc"></router-view>
+						</keep-alive> -->
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 
 <script>
-	import axios from 'axios'
 	export default {
-		data() {
-			return {
-				repoUrl: '',
-				repoName: ''
-			}
-		},
-		mounted() {
-			//发ajax请求获取数据
-			const url = `https://api.github.com/search/repositories?q=v&sort=stars`
-			// this.$http.get(url).then(
-			// 	response =>{
-			// 		const result = response.data;
-			// 		const mostRepo = result.items[0]
-			// 		this.repoUrl = mostRepo.html_url;
-			// 		this.repoName  = mostRepo.name
-			// 	},
-			// 	response =>{
-			// 		
-			// 	}
-			// )
 
-			//使用axios发送ajax请求
-			axios.get(url).then(
-				response => {
-					const result = response.data;
-					const mostRepo = result.items[0]
-					this.repoUrl = mostRepo.html_url;
-					this.repoName = mostRepo.name
-				}).catch(error => {
-				console.log(error)
-			})
-
-		}
 	}
 </script>
 
