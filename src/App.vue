@@ -1,47 +1,49 @@
 <template>
-	<div>
-		<div class="row">
-			<div class="col-xs-offset-2 col-xs-8">
-				<div class="page-header">
-					<h2>Router Test</h2>
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-xs-2 col-xs-offset-2">
-				<div class="list-group">
-					<!--生成路由链接-->
-					<!-- <router-link to="/about" class="list-group-item">About</router-link>
-					<router-link to="/home" class="list-group-item">Home</router-link> -->
-					<router-link to='/about' class="list-group-item">About</router-link>
-					<router-link to='/home'  class="list-group-item">Home</router-link>
-				</div>
-			</div>
-			<div class="col-xs-6">
-				<div class="panel">
-					<div class="panel-body">
-						<keep-alive>
-						<router-view></router-view>
-						</keep-alive>
-						<!--显示当前组件-->
-						<!-- <keep-alive>
-							<router-view msg="abc"></router-view>
-						</keep-alive> -->
-					</div>
-				</div>
-			</div>
+	<div class="todo-container">
+		<div class="todo-wrap">
+			<TodoHeader />
+			<TodoList />
+			<todo-footer />
 		</div>
 	</div>
 </template>
 
-
 <script>
+	import TodoHeader from './components/TodoHeader'
+	import TodoList from './components/TodoList'
+	import TodoFooter from './components/TodoFooter'
 	export default {
-
+		components: {
+			TodoHeader,
+			TodoList,
+			TodoFooter
+		},
+		mounted(){
+			//发送命令给action异步获取保存todos数据并显示
+			this.$store.dispatch('reqTodos')
+		},
+		watch:{//深度监视
+			// todos:{
+			// 	deep:true,//深度监视
+			// 	handler:function(value){
+			// 		//将todos最新值保存到local
+			// 		window.localStorage.setItem('todos_key',JSON.stringify(value))
+			// 	}
+			// }
+		}
 	}
 </script>
 
 <style>
+	/*app*/
+	.todo-container {
+		width: 600px;
+		margin: 0 auto;
+	}
 
+	.todo-container .todo-wrap {
+		padding: 10px;
+		border: 1px solid #ddd;
+		border-radius: 5px;
+	}
 </style>

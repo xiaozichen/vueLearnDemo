@@ -14,7 +14,7 @@
 			</ul>
 			<div>
 				
-					<router-view></router-view>
+					<router-view ></router-view>
 				
 			</div>
 
@@ -25,7 +25,7 @@
 
 <script>
 	export default {
-
+	
 	}
 </script>
 

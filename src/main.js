@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import './base.css'
+import store from './store'
 
-new Vue({//配置对象的属性名都是一些确定的属性名，不能随便修改
+// new Vue({
+// 	el:'#app',
+// 	components:{App},
+// 	template:'<App/>',
+// 	store
+// })
+new Vue({
 	el:'#app',
-	components:{App},
-	template:'<App/>',
-	router
+	render:h=>h(App),
+	store
 })
